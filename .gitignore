@@ -1,0 +1,16 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/betmaster/node_modules
+/betmasterapi/node_modules
+
+# production
+/betmaster/build
+/betmasterapi/build
+
+# firebase
+/betmaster/.firebaserc
+/betmaster/.firebase.json
+
+#bd
+/betmasterapi/database.sqlite
