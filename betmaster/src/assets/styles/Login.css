@@ -1,0 +1,30 @@
+.Login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+
+#Login-moeda {
+    width: 20vw;
+    height: 20vw;
+}
+
+#Login-button {
+    font-size: 2em;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    background-color: rgb(245,168,54);
+    color: black;
+    cursor: pointer;
+}
+#Login-button:hover {
+    background-color: black;
+    color:rgb(245,168,54);
+    
+}
+
