@@ -1,0 +1,11 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: flex-start;
+
+}
+
+.section {
+    flex: 1;
+}

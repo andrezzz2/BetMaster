@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var sequelize = require('./sequelize');
 var User = require('./models/User');
 var Room = require('./models/Room');
 var homeRouter = require('./routes/');
@@ -27,6 +28,12 @@ app.use('/rooms', roomsRouter);
 
 
 // BD setup
+sequelize.authenticate().then(()=>{
+    console.log('Connection has been established successfully.');
+}).catch (error=>{
+    console.error('Unable to connect to the database:', error);
+})
+  
 User.sync({ force: true });
 Room.sync({ force: true });
 

@@ -6,7 +6,6 @@ function Login (){
     
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
-    console.log("login.js");
     function signIn () {
         signInWithPopup(auth, provider).then((result) =>{
             const credential = GoogleAuthProvider.credentialFromResult(result);

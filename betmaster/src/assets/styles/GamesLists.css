@@ -1,0 +1,45 @@
+.GamesLists {
+
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    justify-content: flex-start;
+
+}
+
+.GamesList {
+    display: flex;
+    overflow-x: auto;
+}
+
+.Genero {
+    font-size: 1.5em;
+    margin: 10px 0px 0px 0px;
+}
+
+.jogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 118px;
+    margin: 5px;
+    border: 1px solid aqua;
+    cursor: pointer;
+}
+
+.jogo:hover {
+    width: 150px;
+    height: 236px;
+}
+
+.Descricao{
+    display: none;
+}
+
+.jogo:hover .Descricao{
+    display: block;
+    overflow-wrap: anywhere;
+    overflow-y: hidden;
+}

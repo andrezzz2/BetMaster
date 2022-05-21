@@ -10,7 +10,6 @@
 
 # firebase
 /betmaster/.firebaserc
-/betmaster/.firebase.json
 
 #bd
 /betmasterapi/database.sqlite
