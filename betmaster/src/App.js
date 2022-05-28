@@ -8,6 +8,7 @@ import Games from './pages/Games';
 import axios from 'axios';
 
 function App({user}) {
+    console.log("atualizando App");
   
     const baseURL = "http://localhost:5300";
 
@@ -15,7 +16,19 @@ function App({user}) {
     const [moedas, setMoedas] = useState(0);
     const [icon, setIcon] = useState("");
     const [page, setPage] = useState(<Home/>);
-    const [gameId, setGameId] = useState(-1);
+    const [inRoom, setInRoom] = useState(false);
+    
+    useEffect(()=>{
+        axios.post(baseURL+"/users/getUser",{UID: user.uid}).then((response)=>{
+            setIcon(response.data.PhotoURL);
+            setMoedas(response.data.Moedas);
+        });
+    }, [user]);
+
+    useEffect(()=>{
+        if(inRoom===true)
+            setPage(<Games inRoom={true} setInRoom={setInRoom}/>);
+    }, [inRoom]);
 
     function logOut (){
         signOut(auth).then(() => {
@@ -28,26 +41,7 @@ function App({user}) {
     function comprarMoedas (){
         
     }
-
-    function GamesPageHandle (){
-        if(gameId === 0)
-            setPage(<Games gameId={gameId} setGameId={setGameId}/>);
-        else
-            setGameId(0);
-    }
-
-    useEffect(()=>{
-        axios.post(baseURL+"/users/getUser",{UID: user.uid}).then((response)=>{
-            setIcon(response.data.PhotoURL);
-            setMoedas(response.data.Moedas);
-        });
-    });
     
-
-    useEffect(()=>{
-        setPage(<Games gameId={gameId} setGameId={setGameId}/>);
-    }, [gameId])
-
     return (
         <div className="App">
 
@@ -60,14 +54,14 @@ function App({user}) {
                     </div>
                 </div>
                 <div className="Navbar">
-                    <div className="NavbarItem" onClick={()=>setPage(<Home/>)}>Inicio</div>
-                    <div className="NavbarItem" onClick={GamesPageHandle}>Jogos</div>
+                    <div className="NavbarItem" onClick={()=>{setInRoom(false); setPage(<Home/>);}}>Inicio</div>
+                    <div className="NavbarItem" onClick={()=>{setInRoom(false); setPage(<Games inRoom={false} setInRoom={setInRoom}/>);}}>Jogos</div>
                     <div className="NavbarItem">opção</div>
                     <div className="NavbarItem">opção</div>
                 </div>
                 <div className="Moedas" onClick={comprarMoedas}>
                     <img id="Moedas" src={moeda} alt='moeda'></img>
-                    <p>{String(moedas)+"$"}</p>
+                    <p>{moedas+"$"}</p>
                 </div>
             </header>
             

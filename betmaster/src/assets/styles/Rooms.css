@@ -39,9 +39,9 @@
 
 .SalasAtivas {
     display: flex;
+    flex-direction: column;
     flex: 1;
-    justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     border: 1px solid;
     border-image: linear-gradient(
         #ff512f,
@@ -50,6 +50,17 @@
     ) 1;
     animation: rotate 2.5s ease-in infinite;
     margin: 0px 10px 10px 10px;
+}
+
+#gameName {
+    flex: 0;
+    margin: 5px;
+    font-size: 1.5rem;
+}
+
+#salasAtivas{
+    flex: 1;
+    padding: 0;
 }
 
 .SalaAtiva {

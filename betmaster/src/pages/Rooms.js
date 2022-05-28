@@ -1,20 +1,34 @@
 import '../assets/styles/Rooms.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Rooms () {
-
+function Rooms ({gameId}) {
+    console.log("atualizando Rooms");
     const baseURL = "http://localhost:5300";
 
     const [roomId, setRoomId] = useState(null);
     const [roomList, setRoomList] = useState(null);
+    const [gameName, setGameName] = useState("");
+    const [gameLink, setGameLink] = useState("");
+
+    useEffect(()=>{
+        axios.post(baseURL+"/games/getGame",{GameId: gameId}).then((response)=>{
+            setGameName(response.data.Name);
+            setGameLink(response.data.EmbedLink);
+        });
+        axios.post(baseURL+"/rooms/getAllRooms", {GameId: gameId}).then((response)=>{
+            if(response.data)
+                setRoomList(response.data);
+        });
+    }, [gameId]);
 
     
     function criarSala (){
 
         const name = prompt("digite um nome para a sala");
 
-        axios.post(baseURL+"/rooms/createRoom",{Name: name}).then((response)=>{
+        axios.post(baseURL+"/rooms/createRoom",{Name: name, GameId: gameId}).then((response)=>{
+            console.log(response.data);
             atualizarLista();
         });
         
@@ -22,17 +36,11 @@ function Rooms () {
 
     function atualizarLista (){
 
-        axios.get(baseURL+"/rooms/getRooms").then((response)=>{
-            
+        axios.post(baseURL+"/rooms/getAllRooms", {GameId: gameId}).then((response)=>{
             if(response.data)
                 setRoomList(response.data);
-                
         });
         
-    }
-
-    function buscarSala (){
-
     }
 
     function digitandoSala (){
@@ -40,7 +48,7 @@ function Rooms () {
         const name = document.getElementById("sala-requisitada").value;
 
         if(name){
-            axios.post(baseURL+"/rooms/getRooms", {Name: name}).then((response)=>{
+            axios.post(baseURL+"/rooms/getRooms", {Name: name, GameId: gameId}).then((response)=>{
                 setRoomList(response.data);                    
             });
         }else{
@@ -62,18 +70,20 @@ function Rooms () {
 
             <div className="Sidebar">
                 <div className="Sidebar-options" onClick={atualizarLista}>Atualizar</div>
-                <div className="Sidebar-options" onClick={buscarSala}>Buscar sala</div>
+                <div className="Sidebar-options">Buscar sala</div>
                 <input id="sala-requisitada" onInput={digitandoSala}></input>
                 <div className="Sidebar-options" onClick={criarSala}>Criar sala</div>
             </div>
 
             {roomId?(
                 <div className="Room">
-                    <div className="Game">joguinho</div>
+                    <div className="Game">
+                        <iframe title={gameName} src={gameLink}  width="100%" height="100%" frameBorder="no" allowFullScreen={true} scrolling="no"></iframe>
+                    </div>
                     <div className="Saguao">
                         <div className="Saguao-info">
                             <span id="Sala-sair" onClick={backToList}>sair</span>
-                            <span>Sala {roomId}</span>
+                            <span>{gameName} - Sala {roomId}</span>
                         </div>
                         <div className="Player1">
                             <p>Player 1</p>
@@ -91,7 +101,8 @@ function Rooms () {
                 </div>
             ):(
                 <div className="SalasAtivas">
-                    <ul>
+                    <span id="gameName">{gameName}</span>
+                    <ul id="salasAtivas">
                         {roomList?.map((room)=>{
                             return <li className="SalaAtiva" key={room.Name} onClick={()=>roomSelect(room.Name)}>{room.Name}</li>
                         })}

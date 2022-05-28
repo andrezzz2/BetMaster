@@ -1,10 +1,16 @@
 import GamesLists from './GamesLists';
 import Rooms from './Rooms';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-function Games({gameId, setGameId}){
+function Games({inRoom, setInRoom}){
+    
+    console.log("atualizando Games");
+    const [gameId, setGameId] = useState(0);
 
-    return gameId? <Rooms gameId={gameId}/> : <GamesLists setGameId={setGameId}/>
+    if(inRoom)
+        return <Rooms gameId={gameId}/>
+    else
+        return <GamesLists setGameId={setGameId} setInRoom={setInRoom}/>
 
 }
 
