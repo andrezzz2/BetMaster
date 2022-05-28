@@ -4,22 +4,7 @@ const User = require('../models/User');
 
 
 router.post('/create', function(req, res, next) {
-  /*
-  console.log(req.body.UID);
-  User.findByPk(req.body.UID).then(user=>{
-    if(user)
-      res.send("usuário já cadastrado");
-    else{
-      res.send("cadastrando...");
-      req.body.Moedas = 100;
-      User.create(req.body).then(user2=>{
-        res.send(user2);
-      })
-    }
-  })
-  */
 
-  
   User.findOrCreate({where: {UID: req.body.UID},
                      defaults: {Email: req.body.Email,
                                 PhotoURL: req.body.PhotoURL,

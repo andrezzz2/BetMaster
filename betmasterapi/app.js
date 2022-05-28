@@ -4,9 +4,11 @@ var cookieParser = require('cookie-parser');
 var sequelize = require('./sequelize');
 var User = require('./models/User');
 var Room = require('./models/Room');
+var Game = require('./models/Game');
 var homeRouter = require('./routes/');
 var usersRouter = require('./routes/users');
 var roomsRouter = require('./routes/rooms');
+var gamesRouter = require('./routes/games');
 var cors = require('cors');
 
 var app = express();
@@ -25,6 +27,7 @@ app.use(cors());
 app.use('/', homeRouter);
 app.use('/users', usersRouter);
 app.use('/rooms', roomsRouter);
+app.use('/games', gamesRouter);
 
 
 // BD setup
@@ -36,5 +39,6 @@ sequelize.authenticate().then(()=>{
   
 User.sync({ force: true });
 Room.sync({ force: true });
+Game.sync({ });
 
 module.exports = app;
