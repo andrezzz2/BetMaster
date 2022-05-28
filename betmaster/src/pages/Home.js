@@ -20,7 +20,7 @@ function Home(){
             <div className="section">
                 <h1>Versão 0.2</h1>
                 <ul>
-                    <li>2 primeiros jogos para apenas 1 player</li>
+                    <li>2 primeiros jogos</li>
                     <li>Listas por genero</li>
                 </ul>
             </div>
