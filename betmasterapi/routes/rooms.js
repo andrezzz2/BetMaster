@@ -6,7 +6,9 @@ const { Op } = require('sequelize');
 
 
 router.post('/createRoom', function(req, res, next) {
-  Room.findOrCreate({where:{Name: req.body.Name}}).then(([room, created])=>{
+  console.log("tentando criar sala");
+  Room.findOrCreate({where:{Name: req.body.Name},
+                     defaults:{GameId: req.body.GameId} }).then(([room, created])=>{
     if(created){
         res.send("sala criada com sucesso");
     }else {
@@ -15,9 +17,9 @@ router.post('/createRoom', function(req, res, next) {
   });
 });
 
-router.get('/getRooms', function(req, res, next) {
+router.post('/getAllRooms', function(req, res, next) {
 
-  Room.findAll().then((rooms)=>{
+  Room.findAll({where: {GameId: req.body.GameId }}).then((rooms)=>{
     res.send(rooms);
   });
 
@@ -26,7 +28,7 @@ router.get('/getRooms', function(req, res, next) {
 router.post('/getRooms', function(req, res, next) {
 
   //ver se Name contem o req.body.Name
-  Room.findAll({where: {Name: { [Op.substring]: "%"+req.body.Name+"%" } }}).then((rooms)=>{
+  Room.findAll({where: {Name: { [Op.substring]: "%"+req.body.Name+"%" }, GameId: req.body.GameId}}).then((rooms)=>{
     res.send(rooms);
   });
 
