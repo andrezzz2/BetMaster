@@ -4,10 +4,12 @@ const Game = require('../models/Game');
 
 
 router.post('/add', function(req, res, next) {
-  
+    
   Game.findOrCreate({where: {GameId: req.body.GameId},
                      defaults: {Name: req.body.Name,
+                                Genre: req.body.Genre,
                                 EmbedLink: req.body.EmbedLink,
+                                ImageLink: req.body.ImageLink,
                                 Difficulty: req.body.Difficulty,
                                 Description: req.body.Description }}).then(([game, created])=>{
     if(created){
