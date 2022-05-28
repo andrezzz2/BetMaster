@@ -1,8 +1,9 @@
 .Home {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    align-items: center;
     justify-content: flex-start;
+    flex: 1;
 
 }
 

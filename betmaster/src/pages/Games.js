@@ -1,10 +1,8 @@
 import GamesLists from './GamesLists';
 import Rooms from './Rooms';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function Games(){
-
-    const [gameId, setGameId] =  useState(0);
+function Games({gameId, setGameId}){
 
     return gameId? <Rooms gameId={gameId}/> : <GamesLists setGameId={setGameId}/>
 

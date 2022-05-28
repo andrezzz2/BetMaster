@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import App from './App';
-import Login from './Login';
+import Login from './pages/Login';
 import axios from 'axios';
 
 function Auth() {

@@ -15,6 +15,7 @@ function App({user}) {
     const [moedas, setMoedas] = useState(0);
     const [icon, setIcon] = useState("");
     const [page, setPage] = useState(<Home/>);
+    const [gameId, setGameId] = useState(-1);
 
     function logOut (){
         signOut(auth).then(() => {
@@ -25,7 +26,14 @@ function App({user}) {
     }
 
     function comprarMoedas (){
+        
+    }
 
+    function GamesPageHandle (){
+        if(gameId === 0)
+            setPage(<Games gameId={gameId} setGameId={setGameId}/>);
+        else
+            setGameId(0);
     }
 
     useEffect(()=>{
@@ -34,6 +42,11 @@ function App({user}) {
             setMoedas(response.data.Moedas);
         });
     });
+    
+
+    useEffect(()=>{
+        setPage(<Games gameId={gameId} setGameId={setGameId}/>);
+    }, [gameId])
 
     return (
         <div className="App">
@@ -41,17 +54,20 @@ function App({user}) {
             <header className="Header">
                 <div className="Perfil-icon" onClick={()=>setPage(<Profile/>)}>
                     <img id="Perfil-icon" src={icon} alt='perfil-icon'></img>
-                    <p id="LogOut" onClick={logOut}>sair</p>
+                    <div id="LogOut-container">
+                        <p id="LogOut" onClick={logOut}>sair</p>
+                        <hr></hr>
+                    </div>
                 </div>
                 <div className="Navbar">
                     <div className="NavbarItem" onClick={()=>setPage(<Home/>)}>Inicio</div>
-                    <div className="NavbarItem" onClick={()=>setPage(<Games/>)}>Jogos</div>
+                    <div className="NavbarItem" onClick={GamesPageHandle}>Jogos</div>
                     <div className="NavbarItem">opção</div>
                     <div className="NavbarItem">opção</div>
                 </div>
                 <div className="Moedas" onClick={comprarMoedas}>
                     <img id="Moedas" src={moeda} alt='moeda'></img>
-                    <p>{String(moedas)}</p>
+                    <p>{String(moedas)+"$"}</p>
                 </div>
             </header>
             

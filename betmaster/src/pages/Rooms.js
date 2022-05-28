@@ -69,13 +69,25 @@ function Rooms () {
 
             {roomId?(
                 <div className="Room">
-                    <div className="Room-id-container">
-                        <p id="Room-sair" onClick={backToList}>{"<"}</p>
-                        <p id="Room-id">{roomId}</p> 
-                        
-                    </div>
                     <div className="Game">joguinho</div>
-                    <div className="Saguao">Saguao</div>
+                    <div className="Saguao">
+                        <div className="Saguao-info">
+                            <span id="Sala-sair" onClick={backToList}>sair</span>
+                            <span>Sala {roomId}</span>
+                        </div>
+                        <div className="Player1">
+                            <p>Player 1</p>
+                            <div id="informaçao1"> blabla </div>
+                            <div id="informaçao2"> blabla </div>
+                            <div id="informaçao3"> blabla </div>
+                        </div>
+                        <div className="Player2">
+                            <p>Player 2</p>
+                            <div id="informaçao1"> blabla </div>
+                            <div id="informaçao2"> blabla </div>
+                            <div id="informaçao3"> blabla </div>
+                        </div>
+                    </div>
                 </div>
             ):(
                 <div className="SalasAtivas">

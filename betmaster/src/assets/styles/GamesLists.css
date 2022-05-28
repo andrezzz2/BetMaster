@@ -1,15 +1,12 @@
 .GamesLists {
-
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    justify-content: flex-start;
-
 }
 
 .GamesList {
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .Genero {
@@ -22,11 +19,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 75px;
-    height: 118px;
+    width: 100px;
+    height: 150px;
     margin: 5px;
-    border: 1px solid aqua;
+    font-family: monospace;
+    font-size: 0.9rem;
     cursor: pointer;
+
+    background-color: black;
+    border: 3px solid;
+    border-image: linear-gradient(
+        #ff512f,
+        #dd2476,
+        #1c64ff
+    ) 1;
+
+    animation: rotate 2.5s ease-in infinite;
+    transition: width 200ms, height 200ms;
+    
 }
 
 .jogo:hover {
@@ -40,6 +50,18 @@
 
 .jogo:hover .Descricao{
     display: block;
+    text-align: center;
     overflow-wrap: anywhere;
     overflow-y: hidden;
+}
+
+
+@keyframes rotate {
+    50%{
+        border-image: linear-gradient(
+            360deg,
+            #ff512f,
+            #dd2476,
+            #1c64ff) 1;
+    }
 }

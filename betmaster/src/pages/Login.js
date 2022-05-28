@@ -1,6 +1,6 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import './assets/styles/Login.css';
-import moeda from './assets/imgs/moeda.png';
+import '../assets/styles/Login.css';
+import moeda from '../assets/imgs/moeda.png';
 
 function Login (){
     

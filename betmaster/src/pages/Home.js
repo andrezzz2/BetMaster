@@ -8,15 +8,13 @@ function Home(){
         <div className="Home">
             
             <div className="section">
-                Seção 1
-            </div>
-
-            <div className="section">
-                Seção 2
-            </div>
-
-            <div className="section">
-                Seção 3
+                <h1>Versão 0.1</h1>
+                <ul>
+                    <li>LogIn e LogOut</li>
+                    <li>Criação de salas</li>
+                    <li>Participar de uma sala</li>
+                    <li>Lista de jogos</li>
+                </ul>
             </div>
         
         </div>
