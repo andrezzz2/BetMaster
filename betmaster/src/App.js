@@ -67,6 +67,11 @@ function App({user}) {
             
             {page}
 
+            <footer className="Footer">
+                <p>Site projetado e desenvolvido por André Luiz</p>
+                <p>Se encontra em https://github.com/andrezzz2/BetMaster</p>
+            </footer>
+
         </div>
     );
 }

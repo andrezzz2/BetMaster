@@ -105,12 +105,13 @@ function Rooms ({gameId, user}) {
 
         <div className="Rooms">
 
-            <div className="Sidebar">
+            <aside className="Sidebar">
                 <div className="Sidebar-options" onClick={atualizarLista}>Atualizar</div>
-                <div className="Sidebar-options">Buscar sala</div>
-                <input id="sala-requisitada" onInput={digitandoSala}></input>
                 <div className="Sidebar-options" onClick={criarSala}>Criar sala</div>
-            </div>
+                <label>Buscar sala:</label>
+                <input id="sala-requisitada" type="text" onInput={digitandoSala}></input>
+
+            </aside>
 
             {roomId?(
                 <div className="Room">

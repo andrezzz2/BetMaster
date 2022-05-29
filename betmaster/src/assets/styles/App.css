@@ -2,6 +2,7 @@
   --main-bg-color: #090d10;
   --main-font-color: white;
   --main-font-family: 'Courier New', serif;
+  --main-footer-color: rgb(167,28,28);
 }
 
 body {
@@ -121,4 +122,18 @@ body {
 
 .Moedas p:hover{
   font-size: 1.5rem;
+}
+
+
+.Footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: var(--main-footer-color);
+}
+
+.Footer p{
+  font-size: 0.8rem;
+  margin: 5px;
 }
