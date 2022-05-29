@@ -2,9 +2,10 @@ import '../assets/styles/Rooms.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Rooms ({gameId}) {
+function Rooms ({gameId, user}) {
     console.log("atualizando Rooms");
     const baseURL = "http://localhost:5300";
+    const [interval, set_Interval] = useState();
 
     const [roomId, setRoomId] = useState(null);
     const [roomList, setRoomList] = useState(null);
@@ -22,17 +23,6 @@ function Rooms ({gameId}) {
         });
     }, [gameId]);
 
-    
-    function criarSala (){
-
-        const name = prompt("digite um nome para a sala");
-
-        axios.post(baseURL+"/rooms/createRoom",{Name: name, GameId: gameId}).then((response)=>{
-            console.log(response.data);
-            atualizarLista();
-        });
-        
-    }
 
     function atualizarLista (){
 
@@ -42,6 +32,18 @@ function Rooms ({gameId}) {
         });
         
     }
+    
+    function criarSala (){
+
+        const name = prompt("digite um nome para a sala");
+
+        axios.post(baseURL+"/rooms/createRoom",{Name: name, GameId: gameId}).then((response)=>{
+            console.log(response.data);
+            roomSelect(name);
+        });
+        
+    }
+
 
     function digitandoSala (){
 
@@ -57,12 +59,47 @@ function Rooms ({gameId}) {
     }
 
     function roomSelect (name){
-        setRoomId(name);
+
+        axios.post(baseURL+"/rooms/joinRoom",{Name: name, GameId: gameId, Player: user.uid}).then((response)=>{
+            console.log(response.data);
+            setRoomId(name);
+        });
+         
     }
 
     function backToList(){
-        setRoomId(null);
+
+        axios.post(baseURL+"/rooms/leaveRoom",{Name: roomId, GameId: gameId, Player: user.uid}).then((response)=>{
+            console.log(response.data);
+            setRoomId(null);
+        });
+
     }
+
+    function roomStillExists(){
+
+        console.log("checando se sala ainda existe");
+        if(roomId){
+            axios.post(baseURL+"/rooms/exists",{Name: roomId, GameId: gameId}).then((response)=>{
+                if (!response.data.exists)
+                    setRoomId(null);
+            });
+        }
+
+    }
+
+    useEffect(()=>{
+        if(roomId)
+            set_Interval(setInterval(roomStillExists, 1000)); //checar a cada segundo se a sala ainda existe
+        else{
+            clearInterval(interval);
+            atualizarLista();
+        }
+    }, [roomId])
+
+    
+
+    
 
     return (
 

@@ -27,8 +27,8 @@ function App({user}) {
 
     useEffect(()=>{
         if(inRoom===true)
-            setPage(<Games inRoom={true} setInRoom={setInRoom}/>);
-    }, [inRoom]);
+            setPage(<Games inRoom={true} setInRoom={setInRoom} user={user}/>);
+    }, [inRoom, user]);
 
     function logOut (){
         signOut(auth).then(() => {
@@ -55,7 +55,7 @@ function App({user}) {
                 </div>
                 <div className="Navbar">
                     <div className="NavbarItem" onClick={()=>{setInRoom(false); setPage(<Home/>);}}>Inicio</div>
-                    <div className="NavbarItem" onClick={()=>{setInRoom(false); setPage(<Games inRoom={false} setInRoom={setInRoom}/>);}}>Jogos</div>
+                    <div className="NavbarItem" onClick={()=>{setInRoom(false); setPage(<Games inRoom={false} setInRoom={setInRoom} user={user}/>);}}>Jogos</div>
                     <div className="NavbarItem">opção</div>
                     <div className="NavbarItem">opção</div>
                 </div>
