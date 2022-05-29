@@ -24,6 +24,16 @@ function Home(){
                     <li>Listas por genero</li>
                 </ul>
             </div>
+
+            <div className="section">
+                <h1>Versão 0.3</h1>
+                <ul>
+                    <li>Controle de entrada e saida dos jogadores nas salas</li>
+                    <li>Mudança na estrutura da pagina inicial</li>
+                    <li>Footer adicionado</li>
+                    <li>Estrutura melhor na sidebar da lista de salas</li>
+                </ul>
+            </div>
         
         </div>
 
