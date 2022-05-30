@@ -3,6 +3,8 @@ import '../assets/styles/Home.css';
 
 function Home(){
 
+    console.log("Component - atualizando Home");
+
     return(
 
         <div className="Home">

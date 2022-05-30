@@ -10,10 +10,13 @@ router.post('/create', function(req, res, next) {
                                 PhotoURL: req.body.PhotoURL,
                                 Moedas: 100 }}).then(([user, created])=>{
     if(created){
-      res.send(user);
+      res.send({accepted: true, log: "Novo usuário cadastrado."});
     } else {
-      res.send("usuário já cadastrado");
+      res.send({accepted: false, error: "usuário já cadastrado"});
     }
+  }).catch(error=>{
+      console.error(error);
+      res.send({accepted: false, error: "Falha no sistem ao tentar criar novo usuário"});
   });
 
 });
@@ -22,8 +25,15 @@ router.post('/create', function(req, res, next) {
 router.post('/getUser', function(req, res, next) {
 
   User.findByPk(req.body.UID).then((user=>{
-    res.send(user);
-  }));
+    if(user){
+      res.send({accepted: true, user: user});
+    } else {
+      res.send({accepted: false, error: "Usuário não encontrado"});
+    }
+  })).catch(error=>{
+    console.error(error);
+    res.send({accepted: false, error: "Erro no sistema ao buscar usuário"});
+  });
 
 });
 

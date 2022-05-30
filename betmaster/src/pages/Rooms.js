@@ -3,45 +3,87 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function Rooms ({gameId, user}) {
-    console.log("atualizando Rooms");
+    console.log("Component - atualizando Rooms");
     const baseURL = "http://localhost:5300";
-    const [interval, set_Interval] = useState();
 
     const [roomId, setRoomId] = useState(null);
     const [roomList, setRoomList] = useState(null);
     const [gameName, setGameName] = useState("");
     const [gameLink, setGameLink] = useState("");
+    const [showCreateRoomForm, setShowCreateRoomForm] = useState(false);
+    const [interval, SetInterval] = useState();
 
     useEffect(()=>{
+
         axios.post(baseURL+"/games/getGame",{GameId: gameId}).then((response)=>{
-            setGameName(response.data.Name);
-            setGameLink(response.data.EmbedLink);
+            
+            if(response.data.accepted){
+                setGameName(response.data.game.Name);
+                setGameLink(response.data.game.EmbedLink);
+            } else {
+                console.error(response.data.error);
+            }
+            
         });
-        axios.post(baseURL+"/rooms/getAllRooms", {GameId: gameId}).then((response)=>{
-            if(response.data)
-                setRoomList(response.data);
-        });
+
     }, [gameId]);
+
+    useEffect(()=>{
+
+        if(roomId)
+            SetInterval(setInterval(connectingRoom, 1000)); //checar a cada segundo se a sala ainda existe
+        else{
+            clearInterval(interval);
+            atualizarLista();
+        }
+
+    }, [roomId]);
 
 
     function atualizarLista (){
 
         axios.post(baseURL+"/rooms/getAllRooms", {GameId: gameId}).then((response)=>{
-            if(response.data)
-                setRoomList(response.data);
+            if(response.data.accepted){
+                setRoomList(response.data.List);
+                console.log(response.data.log);
+            }
+            else
+                console.error(response.data.error);
         });
         
+    }
+
+    function criarSalaFormHandler (){
+        if(showCreateRoomForm===false)
+            setShowCreateRoomForm(true);
+        else
+            setShowCreateRoomForm(false);
     }
     
     function criarSala (){
 
-        const name = prompt("digite um nome para a sala");
+        const nameInput = document.getElementById("nomeSalaCriar");
 
-        axios.post(baseURL+"/rooms/createRoom",{Name: name, GameId: gameId}).then((response)=>{
-            console.log(response.data);
-            roomSelect(name);
-        });
-        
+        const name = nameInput.value;
+        if(name.length>0)
+            axios.post(baseURL+"/rooms/createRoom",{Name: name, GameId: gameId}).then((response)=>{
+                
+                if(response.data.accepted){
+                    console.log(response.data.log);
+                    nameInput.value = "";
+                    setShowCreateRoomForm(false);
+
+                    console.log("Entrando na sala ", name);
+                    roomSelect(name);
+                } else {
+                    console.error(response.data.error);
+                    alert(response.data.error);
+                }
+                    
+            });
+        else
+            alert("É preciso digitar algum nome para a sala.");
+
     }
 
 
@@ -50,53 +92,64 @@ function Rooms ({gameId, user}) {
         const name = document.getElementById("sala-requisitada").value;
 
         if(name){
+
             axios.post(baseURL+"/rooms/getRooms", {Name: name, GameId: gameId}).then((response)=>{
-                setRoomList(response.data);                    
+                
+                if(response.data.accepted)
+                    setRoomList(response.data.List);
+                else  
+                    console.error(response.data.error);  
+
             });
-        }else{
+
+        } else {
+            //nome zerado, então só atualizar a lista
             atualizarLista();
+
         }
     }
 
     function roomSelect (name){
 
         axios.post(baseURL+"/rooms/joinRoom",{Name: name, GameId: gameId, Player: user.uid}).then((response)=>{
-            console.log(response.data);
-            setRoomId(name);
+            
+            if(response.data.accepted){
+                setRoomId(name);
+                console.log(response.data.log);
+            } else {
+                console.error(response.data.error);
+                atualizarLista();
+            }
+            
         });
          
     }
 
     function backToList(){
 
-        axios.post(baseURL+"/rooms/leaveRoom",{Name: roomId, GameId: gameId, Player: user.uid}).then((response)=>{
-            console.log(response.data);
-            setRoomId(null);
-        });
+        setRoomId(null);
 
     }
 
-    function roomStillExists(){
-
-        console.log("checando se sala ainda existe");
+    function connectingRoom(){
+        //roomId podia ainda nao estar pronto
         if(roomId){
-            axios.post(baseURL+"/rooms/exists",{Name: roomId, GameId: gameId}).then((response)=>{
-                if (!response.data.exists)
-                    setRoomId(null);
+
+            axios.post(baseURL+"/rooms/connectRoom",{Name: roomId, GameId: gameId, UID: user.uid}).then((response)=>{
+                
+                if(response.data.accepted)
+                    console.log(response.data.log);
+                else{
+                    console.error(response.data.error);
+                    backToList();
+                }
+                    
+
             });
+
         }
 
     }
-
-    useEffect(()=>{
-        if(roomId)
-            set_Interval(setInterval(roomStillExists, 1000)); //checar a cada segundo se a sala ainda existe
-        else{
-            clearInterval(interval);
-            atualizarLista();
-        }
-    }, [roomId])
-
     
 
     
@@ -107,10 +160,16 @@ function Rooms ({gameId, user}) {
 
             <aside className="Sidebar">
                 <div className="Sidebar-options" onClick={atualizarLista}>Atualizar</div>
-                <div className="Sidebar-options" onClick={criarSala}>Criar sala</div>
-                <label>Buscar sala:</label>
+                <div className="Sidebar-options" onClick={criarSalaFormHandler}>Criar sala</div>
+                {showCreateRoomForm?(
+                    <div className='CriarSala'>
+                        <label id="nomeSalaCriar-label">Nome:</label>
+                        <input id="nomeSalaCriar" type="text"></input>
+                        <button id="botaoCriarSala"onClick={criarSala}>Criar</button>
+                    </div> 
+                ):(<></>)}
+                <label id="buscarSala">Buscar sala:</label>
                 <input id="sala-requisitada" type="text" onInput={digitandoSala}></input>
-
             </aside>
 
             {roomId?(
@@ -140,9 +199,18 @@ function Rooms ({gameId, user}) {
             ):(
                 <div className="SalasAtivas">
                     <span id="gameName">{gameName}</span>
+                    <hr style={{"width":"80%"}}/>
                     <ul id="salasAtivas">
                         {roomList?.map((room)=>{
-                            return <li className="SalaAtiva" key={room.Name} onClick={()=>roomSelect(room.Name)}>{room.Name}</li>
+                            if(room.Name)
+                                return  <li className="SalaAtiva" key={room.Name} onClick={()=>roomSelect(room.Name)}>
+                                            <span className='SalaAtivaName'>{room.Name}</span>
+                                            {room.Player2?<span className='SalaAtivaDisponibilidade' style={{color:"red"}}>2/2</span>:
+                                                          <span className='SalaAtivaDisponibilidade' style={{color:"green"}}>1/2</span>
+                                                          }
+                                        </li>
+                            else
+                                return <></>
                         })}
                     </ul>
                 </div>

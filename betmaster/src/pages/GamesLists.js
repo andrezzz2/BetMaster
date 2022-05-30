@@ -4,15 +4,23 @@ import axios from 'axios';
 
 
 function GamesLists({setGameId, setInRoom}){
-    console.log("atualizando GamesLists");
+    console.log("Component - atualizando GamesLists");
 
     const baseURL = "http://localhost:5300";
     const [gameList, setGameList] = useState([]);
     
     useEffect(()=>{
+
         axios.get(baseURL+"/games/getGames").then((response)=>{
-            setGameList(response.data);
+
+            if(response.data.accepted){
+                setGameList(response.data.List);
+            } else {
+                console.error(response.data.error);
+            }
+            
         });
+        
     }, []);
 
     return(

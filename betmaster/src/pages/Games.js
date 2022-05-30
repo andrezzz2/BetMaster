@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 function Games({inRoom, setInRoom, user}){
     
-    console.log("atualizando Games");
+    console.log("Component - atualizando Games");
     const [gameId, setGameId] = useState(0);
 
     if(inRoom)

@@ -8,7 +8,7 @@ import Games from './pages/Games';
 import axios from 'axios';
 
 function App({user}) {
-    console.log("atualizando App");
+    console.log("Component - atualizando App");
   
     const baseURL = "http://localhost:5300";
 
@@ -17,17 +17,34 @@ function App({user}) {
     const [icon, setIcon] = useState("");
     const [page, setPage] = useState(<Home/>);
     const [inRoom, setInRoom] = useState(false);
-    
+    /*
     useEffect(()=>{
+
         axios.post(baseURL+"/users/getUser",{UID: user.uid}).then((response)=>{
-            setIcon(response.data.PhotoURL);
-            setMoedas(response.data.Moedas);
+            if(response.data.accepted){
+                setIcon(response.data.user.PhotoURL);
+                setMoedas(response.data.user.Moedas);
+            }
         });
+
+    }, []);
+    */
+    useEffect(()=>{
+
+        axios.post(baseURL+"/users/getUser",{UID: user.uid}).then((response)=>{
+            if(response.data.accepted){
+                setIcon(response.data.user.PhotoURL);
+                setMoedas(response.data.user.Moedas);
+            }
+        });
+
     }, [user]);
 
     useEffect(()=>{
+
         if(inRoom===true)
             setPage(<Games inRoom={true} setInRoom={setInRoom} user={user}/>);
+    
     }, [inRoom, user]);
 
     function logOut (){
@@ -69,7 +86,7 @@ function App({user}) {
 
             <footer className="Footer">
                 <p>Site projetado e desenvolvido por André Luiz</p>
-                <p>Se encontra em https://github.com/andrezzz2/BetMaster</p>
+                <p>Se encontra em <a target="_blank" rel="noreferrer" href="https://github.com/andrezzz2/BetMaster">https://github.com/andrezzz2/BetMaster</a> </p> 
             </footer>
 
         </div>

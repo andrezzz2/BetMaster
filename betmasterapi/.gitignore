@@ -1,8 +1,0 @@
-#node modules
-/node_modules
-
-# build
-/build
-
-# database
-database.sqlite

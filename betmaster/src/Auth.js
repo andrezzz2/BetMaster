@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import axios from 'axios';
 
 function Auth() {
-  console.log("atualizando Auth");
+  console.log("Component - atualizando Auth");
   
   const baseURL = "http://localhost:5300";
 
@@ -27,15 +27,24 @@ function Auth() {
 
   
   useEffect(()=>{
+
     if(User){
+
       axios.post(baseURL+"/users/create", {UID: User.uid, Email: User.email, PhotoURL: User.photoURL}).then((response) => {
-        console.log("Usuário cadastrado");
-        console.log(response.data);
+        
+        if(response.data.accepted){
+          console.log(response.data.log);
+        } else {
+          console.error(response.data.error);
+        }
+
       });
       setResponse(<App user={User}/>);
+
     }
     else
       setResponse(<Login/>);
+
   }, [User]);
 
   return response;

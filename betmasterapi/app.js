@@ -28,17 +28,28 @@ app.use('/', homeRouter);
 app.use('/users', usersRouter);
 app.use('/rooms', roomsRouter);
 app.use('/games', gamesRouter);
+app.use((error, req, res, next) => {
+    console.log('error middleware');
+    console.error(error);
+    res.sendStatus(500);
+});
 
 
 // BD setup
 sequelize.authenticate().then(()=>{
-    console.log('Connection has been established successfully.');
+    console.log('Conexão com DB foi estabelecida com sucesso.');
 }).catch (error=>{
     console.error('Unable to connect to the database:', error);
 })
   
-User.sync({ force: true });
-Room.sync({ force: true });
-Game.sync({ });
+User.sync({ force: true }).then(()=>{
+    console.log("Tabela User sincronizada.");
+});
+Room.sync({ force: true }).then(()=>{
+    console.log("Tabela Room sincronizada.");
+});
+Game.sync({ }).then(()=>{
+    console.log("Tabela Game sincronizada.");
+});
 
 module.exports = app;

@@ -3,6 +3,7 @@ import '../assets/styles/Login.css';
 import moeda from '../assets/imgs/moeda.png';
 
 function Login (){
+    console.log("Component - atualizando Login");
     
     const auth = getAuth();
     const provider = new GoogleAuthProvider();

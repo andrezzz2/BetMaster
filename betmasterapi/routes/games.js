@@ -13,10 +13,15 @@ router.post('/add', function(req, res, next) {
                                 Difficulty: req.body.Difficulty,
                                 Description: req.body.Description }}).then(([game, created])=>{
     if(created){
-      res.send(game);
+      const log = "jogo adicionado";
+      res.send({accepted: true, log: log});
     } else {
-      res.send("jogo já cadastrado");
+      const error = "jogo já cadastrado";
+      res.send({accepted: false, error: error});
     }
+  }).catch(error=>{
+    console.error(error);
+    res.send({accepted: false, error: "Erro no sistemas ao adicionar jogo."});
   });
 
 });
@@ -25,16 +30,27 @@ router.post('/add', function(req, res, next) {
 router.post('/getGame', function(req, res, next) {
 
   Game.findByPk(req.body.GameId).then((game=>{
-    res.send(game);
-  }));
+    if(game)
+      res.send({accepted: true, game: game});
+    else{
+      const error = "Jogo não encontrado";
+      res.send({accepted: false, error: error});
+    } 
+  })).catch(error=>{
+    console.error(error);
+    res.send({accepted: false, error: "Erro no sistema ao buscar jogo."});
+  });
 
 });
 
 router.get('/getGames', function(req, res, next) {
 
     Game.findAll().then((games=>{
-      res.send(games);
-    }));
+      res.send({accepted: true, List: games});
+    })).catch(error=>{
+      console.error(error);
+      res.send({accepted: false, error: "Erro no sistema ao buscar jogos"});
+    });
   
   });
 

@@ -1,4 +1,5 @@
 function Profile(){
+    console.log("Component - atualizando Profile");
 
     return(
 
