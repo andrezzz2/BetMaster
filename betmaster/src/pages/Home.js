@@ -36,6 +36,18 @@ function Home(){
                     <li>Estrutura melhor na sidebar da lista de salas</li>
                 </ul>
             </div>
+
+            <div className="section">
+                <h1>Versão 0.4</h1>
+                <ul>
+                    <li>Melhora no design da criação de salas</li>
+                    <li>Melhora na estrutura das lista das salas</li>
+                    <li>Informaçao sobre disponbilidade das sala</li>
+                    <li>Persistencia de conexão entre jogadores e servidor enquanto estão na sala</li>
+                    <li>Errors handling</li>
+                </ul>
+            </div>
+        
         
         </div>
 
